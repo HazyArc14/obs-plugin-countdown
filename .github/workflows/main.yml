@@ -28,7 +28,6 @@ jobs:
       matrix:
         arch: [x64]
     if: always()
-    needs: [clang_check]
     outputs:
       commitHash: ${{ steps.setup.outputs.commitHash }}
     defaults:
