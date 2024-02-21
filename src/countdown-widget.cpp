@@ -584,7 +584,7 @@ void CountdownDockWidget::UpdateTimeDisplay(QTime *time)
     } else if (ui->preTimerTxtCheckBox->isChecked() && !ui->postTimerTxtCheckBox->isChecked()) {
         formattedDisplayTime = QString("%1 %2").arg(ui->preTimerTxtLineEdit->text()).arg(formattedDisplayTime);
     } else if (!ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
-        formattedDisplayTime = QString("%1 %2")arg(formattedDisplayTime).arg(ui->postTimerTxtLineEdit->text());
+        formattedDisplayTime = QString("%1 %2").arg(formattedDisplayTime).arg(ui->postTimerTxtLineEdit->text());
     }
 
 	// const char *timeToShow = ConvertToConstChar(formattedDisplayTime);
