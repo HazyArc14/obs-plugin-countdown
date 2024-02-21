@@ -126,7 +126,9 @@ private slots:
 	void ToTimePlayButtonClicked();
 	void ToTimeStopButtonClicked();
 
-	void EndMessageCheckBoxSelected(int state);
+	void PreTimerTxtCheckBoxSelected(int state);
+    void PostTimerTxtCheckBoxSelected(int state);
+    void EndMessageCheckBoxSelected(int state);
 	void SceneSwitchCheckBoxSelected(int state);
 	void HandleTextSourceChange(QString newText);
 	void HandleSceneSourceChange(QString newText);
