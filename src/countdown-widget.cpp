@@ -71,14 +71,23 @@ void CountdownDockWidget::SetupCountdownWidgetUI(
 	ui->textSourceDropdownLabel->setText(
 		obs_module_text("TextSourceLabel"));
 
+    ui->preTimerTxtCheckBox->setCheckState(Qt::Unchecked);
+    ui->preTimerTxtCheckBox->setToolTip(obs_module_text("PreTimerTxtCheckBoxTip"));
+    ui->preTimerTxtCheckBox->setText(obs_module_text("PreTimerTxtLabel"));
+    ui->preTimerTxtLineEdit->setEnabled(false);
+    ui->preTimerTxtLineEdit->setToolTip(obs_module_text("PreTimerTxtLineEditTip"));
+
+    ui->postTimerTxtCheckBox->setCheckState(Qt::Unchecked);
+    ui->postTimerTxtCheckBox->setToolTip(obs_module_text("PostTimerTxtCheckBoxTip"));
+    ui->postTimerTxtCheckBox->setText(obs_module_text("PostTimerTxtLabel"));
+    ui->postTimerTxtLineEdit->setEnabled(false);
+    ui->postTimerTxtLineEdit->setToolTip(obs_module_text("PostTimerTxtLineEditTip"));
+
 	ui->endMessageCheckBox->setCheckState(Qt::Unchecked);
-	ui->endMessageCheckBox->setToolTip(
-		obs_module_text("EndMessageCheckBoxTip"));
+	ui->endMessageCheckBox->setToolTip(obs_module_text("EndMessageCheckBoxTip"));
 	ui->endMessageCheckBox->setText(obs_module_text("EndMessageLabel"));
-	// ui->timerEndLabel->setEnabled(false);
 	ui->endMessageLineEdit->setEnabled(false);
-	ui->endMessageLineEdit->setToolTip(
-		obs_module_text("EndMessageLineEditTip"));
+	ui->endMessageLineEdit->setToolTip(obs_module_text("EndMessageLineEditTip"));
 
 	ui->switchSceneCheckBox->setCheckState(Qt::Unchecked);
 	ui->switchSceneCheckBox->setToolTip(
@@ -129,6 +138,12 @@ void CountdownDockWidget::ConnectUISignalHandlers()
 
 	QObject::connect(ui->toTimeStopButton, SIGNAL(clicked()),
 			 SLOT(ToTimeStopButtonClicked()));
+
+	QObject::connect(ui->preTimerTxtCheckBox, SIGNAL(stateChanged(int)),
+			 SLOT(PreTimerTxtCheckBoxSelected(int)));
+
+	QObject::connect(ui->postTimerTxtCheckBox, SIGNAL(stateChanged(int)),
+			 SLOT(PostTimerTxtCheckBoxSelected(int)));
 
 	QObject::connect(ui->endMessageCheckBox, SIGNAL(stateChanged(int)),
 			 SLOT(EndMessageCheckBoxSelected(int)));
@@ -398,8 +413,12 @@ void CountdownDockWidget::StartTimerCounting(CountdownWidgetStruct *context)
 
 	ui->textSourceDropdownList->setEnabled(false);
 	ui->textSourceDropdownLabel->setEnabled(false);
+	ui->preTimerTxtLineEdit->setEnabled(false);
+	ui->postTimerTxtLineEdit->setEnabled(false);
 	ui->endMessageLineEdit->setEnabled(false);
 	ui->sceneSourceDropdownList->setEnabled(false);
+	ui->preTimerTxtCheckBox->setEnabled(false);
+	ui->postTimerTxtCheckBox->setEnabled(false);
 	ui->endMessageCheckBox->setEnabled(false);
 	ui->switchSceneCheckBox->setEnabled(false);
 
@@ -428,6 +447,14 @@ void CountdownDockWidget::StopTimerCounting(CountdownWidgetStruct *context)
 	ui->textSourceDropdownList->setEnabled(true);
 	ui->textSourceDropdownLabel->setEnabled(true);
 
+    ui->preTimerTxtCheckBox->setEnabled(true);
+    if (ui->preTimerTxtCheckBox->isChecked()) {
+        ui->preTimerTxtLineEdit->setEnabled(true);
+    }
+    ui->postTimerTxtCheckBox->setEnabled(true);
+    if (ui->postTimerTxtCheckBox->isChecked()) {
+        ui->postTimerTxtLineEdit->setEnabled(true);
+    }
 	ui->endMessageCheckBox->setEnabled(true);
 	if (ui->endMessageCheckBox->isChecked()) {
 		ui->endMessageLineEdit->setEnabled(true);
@@ -478,9 +505,22 @@ void CountdownDockWidget::TimerDecrement()
 
 	if (currentTime->hour() == 0 && currentTime->minute() == 0 &&
 	    currentTime->second() == 0) {
+
+	    QString preTimerTxtText = ui->preTimerTxtLineEdit->text();
+	    QString preTimerTxtText = ui->postTimerTxtLineEdit->text();
 		QString endMessageText = ui->endMessageLineEdit->text();
+
+
 		if (ui->endMessageCheckBox->isChecked()) {
-			SetSourceText(endMessageText.toStdString().c_str());
+		    if (ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
+                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+            } else if (ui->preTimerTxtCheckBox->isChecked() && !ui->postTimerTxtCheckBox->isChecked()) {
+                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str());
+		    } else if (!ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
+                SetSourceText(endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+		    } else {
+                SetSourceText(endMessageText.toStdString().c_str());
+		    }
 		}
 		if (ui->switchSceneCheckBox->isChecked()) {
 			SetCurrentScene();
@@ -713,6 +753,24 @@ int CountdownDockWidget::CheckSourceType(obs_source_t *source)
 	return 0;
 }
 
+void CountdownDockWidget::PreTimerTxtCheckBoxSelected(int state)
+{
+	if (state) {
+		ui->preTimerTxtLineEdit->setEnabled(true);
+	} else {
+		ui->preTimerTxtLineEdit->setEnabled(false);
+	}
+}
+
+void CountdownDockWidget::PostTimerTxtCheckBoxSelected(int state)
+{
+	if (state) {
+		ui->postTimerTxtLineEdit->setEnabled(true);
+	} else {
+		ui->postTimerTxtLineEdit->setEnabled(false);
+	}
+}
+
 void CountdownDockWidget::EndMessageCheckBoxSelected(int state)
 {
 	if (state) {
@@ -777,6 +835,18 @@ void CountdownDockWidget::LoadSavedSettings(Ui::CountdownTimer *ui)
 		const char *selectedTextSource =
 			obs_data_get_string(data, "selectedTextSource");
 
+		int preTimerTxtCheckBoxStatus =
+			(int)obs_data_get_int(data, "preTimerTxtCheckBoxStatus");
+
+		const char *preTimerTxtText =
+			obs_data_get_string(data, "preTimerTxtText");
+
+		int postTimerTxtCheckBoxStatus =
+			(int)obs_data_get_int(data, "postTimerTxtCheckBoxStatus");
+
+		const char *postTimerTxtText =
+			obs_data_get_string(data, "postTimerTxtText");
+
 		int endMessageCheckBoxStatus =
 			(int)obs_data_get_int(data, "endMessageCheckBoxStatus");
 
@@ -810,6 +880,16 @@ void CountdownDockWidget::LoadSavedSettings(Ui::CountdownTimer *ui)
 		ui->timerSeconds->setText(QString::number(seconds));
 		ui->secondsCheckBox->setCheckState(
 			(Qt::CheckState)secondsCheckBoxStatus);
+
+		ui->preTimerTxtLineEdit->setText(preTimerTxtText);
+
+		ui->preTimerTxtCheckBox->setCheckState(
+			(Qt::CheckState)preTimerTxtCheckBoxStatus);
+
+		ui->posTimerTxtLineEdit->setText(posTimerTxtText);
+
+		ui->posTimerTxtCheckBox->setCheckState(
+			(Qt::CheckState)posTimerTxtCheckBoxStatus);
 
 		ui->endMessageLineEdit->setText(endMessageText);
 
@@ -867,6 +947,22 @@ void CountdownDockWidget::SaveSettings()
 	obs_data_set_string(obsData, "selectedTextSource",
 			    context->textSourceNameText.c_str());
 
+	int preTimerTxtCheckBoxStatus = ui->preTimerTxtCheckBox->checkState();
+	obs_data_set_int(obsData, "preTimerTxtCheckBoxStatus",
+			 preTimerTxtCheckBoxStatus);
+
+	QString preTimerTxtLineEdit = ui->preTimerTxtLineEdit->text();
+	obs_data_set_string(obsData, "preTimerTxtText",
+			    preTimerTxtLineEdit.toStdString().c_str());
+
+	int postTimerTxtCheckBoxStatus = ui->postTimerTxtCheckBox->checkState();
+	obs_data_set_int(obsData, "postTimerTxtCheckBoxStatus",
+			 postTimerTxtCheckBoxStatus);
+
+	QString postTimerTxtLineEdit = ui->postTimerTxtLineEdit->text();
+	obs_data_set_string(obsData, "postTimerTxtText",
+			    postTimerTxtLineEdit.toStdString().c_str());
+
 	int endMessageCheckBoxStatus = ui->endMessageCheckBox->checkState();
 	obs_data_set_int(obsData, "endMessageCheckBoxStatus",
 			 endMessageCheckBoxStatus);
@@ -891,6 +987,12 @@ void CountdownDockWidget::SaveSettings()
 		obs_data_set_int(obsData, "selectedTimerTabIndex",
 				 selectedTimerTabIndex);
 	};
+
+	obs_data_set_int(obsData, "preTimerTxtCheckBoxStatus",
+			 preTimerTxtCheckBoxStatus);
+
+	obs_data_set_int(obsData, "postTimerTxtCheckBoxStatus",
+			 postTimerTxtCheckBoxStatus);
 
 	obs_data_set_int(obsData, "endMessageCheckBoxStatus",
 			 endMessageCheckBoxStatus);

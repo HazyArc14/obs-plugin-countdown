@@ -33,78 +33,6 @@
     <property name="verticalSpacing">
      <number>0</number>
     </property>
-    <item row="3" column="0">
-     <layout class="QHBoxLayout" name="sourceDropDownLayout" stretch="0,0,1">
-      <property name="spacing">
-       <number>-1</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="textSourceDropdownLabel">
-        <property name="text">
-         <string>Source</string>
-        </property>
-        <property name="margin">
-         <number>2</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QComboBox" name="textSourceDropdownList"/>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="0">
-     <layout class="QHBoxLayout" name="endMessageLayout" stretch="0,0,1">
-      <property name="spacing">
-       <number>-1</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinimumSize</enum>
-      </property>
-      <item>
-       <widget class="QCheckBox" name="endMessageCheckBox">
-        <property name="text">
-         <string>Message</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="endMessageLineEdit"/>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="0">
      <widget class="QLCDNumber" name="timeDisplay">
       <property name="autoFillBackground">
@@ -185,7 +113,151 @@
       </item>
      </layout>
     </item>
+    <item row="3" column="0">
+     <layout class="QHBoxLayout" name="sourceDropDownLayout" stretch="0,0,1">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="textSourceDropdownLabel">
+        <property name="text">
+         <string>Source</string>
+        </property>
+        <property name="margin">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QComboBox" name="textSourceDropdownList"/>
+      </item>
+     </layout>
+    </item>
+    <item row="4" column="0">
+     <layout class="QHBoxLayout" name="preTimerTxtLayout" stretch="0,0,1">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="preTimerTxtCheckBox">
+        <property name="text">
+         <string>PreText</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="preTimerTxtLineEdit"/>
+      </item>
+     </layout>
+    </item>
     <item row="5" column="0">
+     <layout class="QHBoxLayout" name="postTimerTxtLayout" stretch="0,0,1">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="postTimerTxtCheckBox">
+        <property name="text">
+         <string>PostText</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="postTimerTxtLineEdit"/>
+      </item>
+     </layout>
+    </item>
+    <item row="6" column="0">
+     <layout class="QHBoxLayout" name="endMessageLayout" stretch="0,0,1">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="endMessageCheckBox">
+        <property name="text">
+         <string>Message</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="endMessageLineEdit"/>
+      </item>
+     </layout>
+    </item>
+    <item row="7" column="0">
      <layout class="QHBoxLayout" name="sceneDropdownLayout" stretch="0,0,1">
       <item>
        <widget class="QCheckBox" name="switchSceneCheckBox">
@@ -218,7 +290,7 @@
       </item>
      </layout>
     </item>
-    <item row="6" column="0">
+    <item row="8" column="0">
      <widget class="QTabWidget" name="countdownTypeTabWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
