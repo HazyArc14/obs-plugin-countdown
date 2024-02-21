@@ -886,10 +886,10 @@ void CountdownDockWidget::LoadSavedSettings(Ui::CountdownTimer *ui)
 		ui->preTimerTxtCheckBox->setCheckState(
 			(Qt::CheckState)preTimerTxtCheckBoxStatus);
 
-		ui->posTimerTxtLineEdit->setText(posTimerTxtText);
+		ui->postTimerTxtLineEdit->setText(postTimerTxtText);
 
-		ui->posTimerTxtCheckBox->setCheckState(
-			(Qt::CheckState)posTimerTxtCheckBoxStatus);
+		ui->postTimerTxtCheckBox->setCheckState(
+			(Qt::CheckState)postTimerTxtCheckBoxStatus);
 
 		ui->endMessageLineEdit->setText(endMessageText);
 
