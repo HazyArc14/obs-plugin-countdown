@@ -506,24 +506,10 @@ void CountdownDockWidget::TimerDecrement()
 	if (currentTime->hour() == 0 && currentTime->minute() == 0 &&
 	    currentTime->second() == 0) {
 
-	    QString preTimerTxtText = ui->preTimerTxtLineEdit->text();
-	    QString preTimerTxtText = ui->postTimerTxtLineEdit->text();
 		QString endMessageText = ui->endMessageLineEdit->text();
 
-
 		if (ui->endMessageCheckBox->isChecked()) {
-		    if (ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
-//                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
-                SetSourceText(printf("%30s %30s %30s", preTimerTxtText.toStdString().c_str(), endMessageText.toStdString().c_str(), postTimerTxtText.toStdString().c_str()));
-            } else if (ui->preTimerTxtCheckBox->isChecked() && !ui->postTimerTxtCheckBox->isChecked()) {
-//                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str());
-                SetSourceText(printf("%30s %30s", preTimerTxtText.toStdString().c_str(), endMessageText.toStdString().c_str()));
-		    } else if (!ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
-//                SetSourceText(endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
-                SetSourceText(printf("%30s %30s", endMessageText.toStdString().c_str(), postTimerTxtText.toStdString().c_str()));
-		    } else {
-                SetSourceText(endMessageText.toStdString().c_str());
-		    }
+		    SetSourceText(endMessageText.toStdString().c_str());
 		}
 		if (ui->switchSceneCheckBox->isChecked()) {
 			SetCurrentScene();
@@ -588,8 +574,21 @@ QString CountdownDockWidget::ConvertTimeToDisplayString(QTime *timeToConvert)
 
 void CountdownDockWidget::UpdateTimeDisplay(QTime *time)
 {
+
 	ui->timeDisplay->display(time->toString("hh:mm:ss"));
+
 	QString formattedDisplayTime = ConvertTimeToDisplayString(time);
+	QString preTimerTxtText = ui->preTimerTxtLineEdit->text();
+    QString preTimerTxtText = ui->postTimerTxtLineEdit->text();
+
+	if (ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
+        formattedDisplayTime = *preTimerTxtText + " " + *formattedDisplayTime + " " + *postTimerTxtText;
+    } else if (ui->preTimerTxtCheckBox->isChecked() && !ui->postTimerTxtCheckBox->isChecked()) {
+        formattedDisplayTime = *preTimerTxtText + " " + *formattedDisplayTime;
+    } else if (!ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
+        formattedDisplayTime = *formattedDisplayTime + " " + *postTimerTxtText;
+    }
+
 	// const char *timeToShow = ConvertToConstChar(formattedDisplayTime);
 	// blog(LOG_INFO, "Formatted time is: %s", timeToShow);
 	SetSourceText(formattedDisplayTime);

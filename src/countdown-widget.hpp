@@ -27,7 +27,6 @@
 
 #include <string>
 #include <iostream>
-#include <cstdio>
 #include <chrono>
 #include <list>
 #include <util/base.h>
