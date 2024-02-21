@@ -513,11 +513,14 @@ void CountdownDockWidget::TimerDecrement()
 
 		if (ui->endMessageCheckBox->isChecked()) {
 		    if (ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
-                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+//                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+                SetSourceText(printf("%30s %30s %30s", preTimerTxtText.toStdString().c_str(), endMessageText.toStdString().c_str(), postTimerTxtText.toStdString().c_str()));
             } else if (ui->preTimerTxtCheckBox->isChecked() && !ui->postTimerTxtCheckBox->isChecked()) {
-                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str());
+//                SetSourceText(preTimerTxtText.toStdString().c_str() + " " + endMessageText.toStdString().c_str());
+                SetSourceText(printf("%30s %30s", preTimerTxtText.toStdString().c_str(), endMessageText.toStdString().c_str()));
 		    } else if (!ui->preTimerTxtCheckBox->isChecked() && ui->postTimerTxtCheckBox->isChecked()) {
-                SetSourceText(endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+//                SetSourceText(endMessageText.toStdString().c_str() + " " + postTimerTxtText.toStdString().c_str());
+                SetSourceText(printf("%30s %30s", endMessageText.toStdString().c_str(), postTimerTxtText.toStdString().c_str()));
 		    } else {
                 SetSourceText(endMessageText.toStdString().c_str());
 		    }
